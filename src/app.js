@@ -17,11 +17,18 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
-app.use('/api/folders', notefulRouter)
+app.use(notefulRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!')
-})
+
+//THIS WILL HAVE TO CHANGE
+app.get('/', (req, res,next) => {
+  const knexInstance = req.app.get('db');
+  notefulService.getAllBookmarks(knexInstance)
+    .then(bookmarks => {
+      res.json(bookmarks);
+    })
+    .catch(next);
+});
 
 app.use(function errorHandler(error, req, res, next) {
   let response

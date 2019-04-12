@@ -9,15 +9,15 @@ describe('Noteful Folders Endpoints', function() {
   const testFoldersArray = [
     {
       id: 1,
-      name: "Dogs",
+      folder_name: "Dogs",
     },
     {
       id: 2,
-      name: "Cats",
+      folder_name: "Cats",
     },
     {
       id: 3,
-      name: "Pigs",
+      folder_name: "Pigs",
     }
   ];
 
@@ -33,9 +33,13 @@ describe('Noteful Folders Endpoints', function() {
 
   after('disconnect from db', () => db.destroy());
 
-  before('clean the table', () => db('folders').truncate());
+  // before('clean the table', () => db('folders').truncate());
 
-  afterEach('cleanup', () => db('folders').truncate());
+  // afterEach('cleanup', () => db('folders').truncate());
+
+  before('clean the table', () => db.raw('TRUNCATE folders, notes RESTART IDENTITY CASCADE'))
+
+  afterEach('cleanup',() => db.raw('TRUNCATE folders, notes RESTART IDENTITY CASCADE'))
 
   context('Given there are articles in the database', () => {
     const testFolders = testFoldersArray;
@@ -72,7 +76,7 @@ describe('Noteful Folders Endpoints', function() {
 
       const newFolder = {
         id : 13,
-        name: 'PostTest',
+        folder_name: 'PostTest',
       };
       
       // eslint-disable-next-line no-undef
@@ -81,7 +85,7 @@ describe('Noteful Folders Endpoints', function() {
         .send(newFolder)
         .expect(201)
         .expect(res => {
-          expect(res.body.name).to.eql(newFolder.name);
+          expect(res.body.folder_name).to.eql(newFolder.folder_name);
           expect(res.body).to.have.property('id');
           expect(res.headers.location).to.eql(`/api/folders/${res.body.id}`);
         })
@@ -93,7 +97,7 @@ describe('Noteful Folders Endpoints', function() {
         );
     });
 
-    it('responds with 400 and an error message when the \'name\' is missing', () => {
+    it('responds with 400 and an error message when the \'folder_name\' is missing', () => {
       // eslint-disable-next-line no-undef
       return supertest(app)
         .post('/api/folders')
@@ -101,7 +105,7 @@ describe('Noteful Folders Endpoints', function() {
           id: 15,
         })
         .expect(400, {
-          error: { message: 'Missing \'name\' in request body' }
+          error: { message: 'Missing \'folder_name\' in request body' }
         });
     });
 
@@ -115,28 +119,28 @@ describe('Noteful Folders Endpoints', function() {
   //     const testBookmarks = [
   //       {
   //         id: 1,
-  //         name: 'test1',
+  //         folder_name: 'test1',
   //         url: 'test1_url',
   //         description: 'test1_descr',
   //         rating: 5
   //       },
   //       {
   //         id: 2,
-  //         name: 'test2',
+  //         folder_name: 'test2',
   //         url: 'test2_url',
   //         description: 'test2_descr',
   //         rating: 2
   //       },
   //       {
   //         id: 3,
-  //         name: 'test3',
+  //         folder_name: 'test3',
   //         url: 'test3_url',
   //         description: 'test3_descr',
   //         rating: 3
   //       },
   //       {
   //         id: 4,
-  //         name: 'test4',
+  //         folder_name: 'test4',
   //         url: 'test4_url',
   //         description: 'test4_descr',
   //         rating: 4
@@ -223,7 +227,7 @@ describe('Noteful Folders Endpoints', function() {
   //         .send({ irrelevantField: 'foo' })
   //         .expect(400, {
   //           error: {
-  //             message: `request body must contain either 'name', 'url', 'rating', or 'description'`
+  //             message: `request body must contain either 'folder_name', 'url', 'rating', or 'description'`
   //           }
   //         });
   //     });
@@ -231,7 +235,7 @@ describe('Noteful Folders Endpoints', function() {
   //     it(`responds with 204 when updating only a subset of fields`, () => {
   //       const idToUpdate = 2
   //       const updateBookmark = {
-  //         name: 'updated bookmark name',
+  //         folder_name: 'updated bookmark folder_name',
   //       }
   //       const expectedBookmark = {
   //         ...testBookmarks[idToUpdate - 1],
