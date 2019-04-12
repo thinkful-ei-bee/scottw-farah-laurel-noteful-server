@@ -1,4 +1,4 @@
-INSERT INTO folders (id, note_name, modified, content, folder_id)
+INSERT INTO notes (id, note_name, modified, folder_id, content)
 VALUES
   (1, 'Dogs', now() - '29 days'::INTERVAL, 1, 'dogs dogs'),
   (2, 'Cats', now() - '29 days'::INTERVAL, 2, 'cats cats'),
