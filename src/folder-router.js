@@ -2,11 +2,11 @@
 
 const express = require('express');
 
-const notefulRouter = express.Router();
+const folderRouter = express.Router();
 const bodyParser = express.json();
 const uuid = require('uuid/v4');
 const logger = require('./logger');
-const notefulService = require('./noteful-service');
+const notefulService = require('./folder-service');
 const xss = require('xss');
 
 const serializeFolder = folder => ({
@@ -24,9 +24,7 @@ const serializeNote = note => ({
   folder_id: note.folder_id,
 });
 
-
-
-notefulRouter
+folderRouter
   .route('/api/folders')
   .get((req,res,next) => {
 
@@ -67,7 +65,7 @@ notefulRouter
   });
 
 
-notefulRouter
+folderRouter
   .route('/api/folders/:id')
   .all((req, res, next) => {
     notefulService.getFolderById(
@@ -93,4 +91,4 @@ notefulRouter
   })
   
 
-module.exports = notefulRouter;
+module.exports = folderRouter;

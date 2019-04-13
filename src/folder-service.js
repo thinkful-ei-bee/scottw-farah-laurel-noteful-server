@@ -1,6 +1,6 @@
 'use strict';
 
-const notefulService = {
+const folderService = {
   getAllFolders(db) {
     return (
       db.select('*').from('folders')
@@ -27,4 +27,4 @@ const notefulService = {
 
 
 
-module.exports = notefulService;
+module.exports = folderService;

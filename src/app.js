@@ -5,8 +5,8 @@ const helmet = require('helmet')
 const cors = require('cors')
 const { NODE_ENV } = require('./config')
 const logger = require('./logger')
-const notefulRouter = require('./noteful-router');
-const notefulService = require('./noteful-service');
+const folderRouter = require('./folder-router');
+const folderService = require('./folder-service');
 const app = express()
 
 const morganOption = (NODE_ENV === 'production')
@@ -17,13 +17,13 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
-app.use(notefulRouter);
+app.use(folderRouter);
 
 
 //THIS WILL HAVE TO CHANGE
 app.get('/', (req, res,next) => {
   const knexInstance = req.app.get('db');
-  notefulService.getAllBookmarks(knexInstance)
+  folderService.getAllBookmarks(knexInstance)
     .then(bookmarks => {
       res.json(bookmarks);
     })

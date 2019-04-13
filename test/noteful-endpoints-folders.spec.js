@@ -50,7 +50,6 @@ describe('Noteful Folders Endpoints', function() {
         .insert(testFolders);
     });
 
-    
     it('GET /api/folders:id responds with 200 and correct folder', () => {
 
       // eslint-disable-next-line no-undef
@@ -108,77 +107,18 @@ describe('Noteful Folders Endpoints', function() {
           error: { message: 'Missing \'folder_name\' in request body' }
         });
     });
-
-
-
   });
 
-  // describe('DELETE /api/bookmarks/:id', () => {
-  //   context('Given there are bookmarks in the database', () => {
-      
-  //     const testBookmarks = [
-  //       {
-  //         id: 1,
-  //         folder_name: 'test1',
-  //         url: 'test1_url',
-  //         description: 'test1_descr',
-  //         rating: 5
-  //       },
-  //       {
-  //         id: 2,
-  //         folder_name: 'test2',
-  //         url: 'test2_url',
-  //         description: 'test2_descr',
-  //         rating: 2
-  //       },
-  //       {
-  //         id: 3,
-  //         folder_name: 'test3',
-  //         url: 'test3_url',
-  //         description: 'test3_descr',
-  //         rating: 3
-  //       },
-  //       {
-  //         id: 4,
-  //         folder_name: 'test4',
-  //         url: 'test4_url',
-  //         description: 'test4_descr',
-  //         rating: 4
-  //       }
-  //     ];
-  
-  //     beforeEach('insert bookmark', () => {
-  //       return db
-  //         .into('bookmarks')
-  //         .insert(testBookmarks);
-  //     });
-  
-  //     it('responds with 204 and removes the bookmark', () => {
-  //       const idToRemove = 2;
-  //       const expectedBookmarks = testBookmarks.filter(bookmark => bookmark.id !== idToRemove);
-  //       // eslint-disable-next-line no-undef
-  //       return supertest(app)
-  //         .delete(`/api/bookmarks/${idToRemove}`)
-  //         .expect(204)
-  //         .then(res =>
-  //           // eslint-disable-next-line no-undef
-  //           supertest(app)
-  //             .get('/api/bookmarks')
-  //             .expect(expectedBookmarks)
-  //         );
-  //     });
-
-  //     context('Given no bookmarks', () => {
-  //       it('responds with 404', () => {
-  //         const bookmarkId = 123456;
-  //         // eslint-disable-next-line no-undef
-  //         return supertest(app)
-  //           .delete(`/api/bookmarks/${bookmarkId}`)
-  //           .expect(404, { error: { message: 'Bookmark doesn\'t exist' } });
-  //       });
-  //     });
-  //   });
-  // });
+  context('Given no folders', () => {
+    it('responds with 404', () => {
+      const folderId = 123456;
+      // eslint-disable-next-line no-undef
+      return supertest(app)
+        .delete(`/api/folders/${folderId}`)
+        .expect(404, { error: { message: 'Folder doesn\'t exist' } });
+      });
+    });
+  });
 
   // describe(`PATCH /api/folders/:id`, () => {
   //   context(`Given no folders`, () => {
@@ -259,5 +199,3 @@ describe('Noteful Folders Endpoints', function() {
 
   //   });
   // });
-
-});
