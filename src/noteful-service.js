@@ -32,7 +32,7 @@ const notefulService = {
 
   insertNote(db, newNote) {
     return db.insert(newNote).into('notes')
-      .returnng('*')
+      .returning('*')
       .then(rows => {
         return rows[0];
       });

@@ -123,50 +123,50 @@ describe('Noteful Notes Endpoints', function() {
         content: "Goat goat"
       };
 
-      // return supertest(app)
-      //   .post('/api/folders')
-      //   .send(newFolder)
-      //   .then(() => {
-      //     return supertest(app)
-      //     .post('/api/notes')
-      //     .send(newNote)
-      //     .expect(201)
-      //     .expect(res => {
-      //       expect(res.body.note_name).to.eql(newNote.note_name);
-      //       expect(res.body.modified).to.eql(newNote.modified);
-      //       expect(res.body.folder_id).to.eql(newNote.folder_id);
-      //       expect(res.body.content).to.eql(newNote.content);
-      //       expect(res.body).to.have.property('id');
-      //       expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`);
-      //     })
-      //     .then(postRes =>
-      //       // eslint-disable-next-line no-undef
-      //       supertest(app)
-      //         .get('/api/notes/' + postRes.body.id )
-      //         .expect(postRes.body) 
-      //     );
-      //   });
+      return supertest(app)
+        .post('/api/folders')
+        .send(newFolder)
+        .then(() => {
+          return supertest(app)
+          .post('/api/notes')
+          .send(newNote)
+          .expect(201)
+          .expect(res => {
+            expect(res.body.note_name).to.eql(newNote.note_name);
+            expect(res.body.modified).to.eql(newNote.modified);
+            expect(res.body.folder_id).to.eql(newNote.folder_id);
+            expect(res.body.content).to.eql(newNote.content);
+            expect(res.body).to.have.property('id');
+            expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`);
+          })
+          .then(postRes =>
+            // eslint-disable-next-line no-undef
+            supertest(app)
+              .get('/api/notes/' + postRes.body.id )
+              .expect(postRes.body) 
+          );
+        });
 
       
       // eslint-disable-next-line no-undef
-      return supertest(app)
-        .post('/api/notes')
-        .send(newNote)
-        .expect(201)
-        .expect(res => {
-          expect(res.body.note_name).to.eql(newNote.note_name);
-          expect(res.body.modified).to.eql(newNote.modified);
-          expect(res.body.folder_id).to.eql(newNote.folder_id);
-          expect(res.body.content).to.eql(newNote.content);
-          expect(res.body).to.have.property('id');
-          expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`);
-        })
-        .then(postRes =>
-          // eslint-disable-next-line no-undef
-          supertest(app)
-            .get('/api/notes/' + postRes.body.id )
-            .expect(postRes.body) 
-        );
+      // return supertest(app)
+      //   .post('/api/notes')
+      //   .send(newNote)
+      //   .expect(201)
+      //   .expect(res => {
+      //     expect(res.body.note_name).to.eql(newNote.note_name);
+      //     expect(res.body.modified).to.eql(newNote.modified);
+      //     expect(res.body.folder_id).to.eql(newNote.folder_id);
+      //     expect(res.body.content).to.eql(newNote.content);
+      //     expect(res.body).to.have.property('id');
+      //     expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`);
+      //   })
+      //   .then(postRes =>
+      //     // eslint-disable-next-line no-undef
+      //     supertest(app)
+      //       .get('/api/notes/' + postRes.body.id )
+      //       .expect(postRes.body) 
+      //   );
     });
 
     it('responds with 400 and an error message when the \'note_name\' is missing', () => {
