@@ -11,6 +11,7 @@ describe('Noteful Notes Endpoints', function() {
       id: 1,
       note_name: "DogsNote",
       modified: '2019-01-03T00:00:00.000Z',
+      //modified: now(),
       folder_id: 1,
       content: "Dogs dogs"
     },
@@ -27,6 +28,25 @@ describe('Noteful Notes Endpoints', function() {
       modified: "2018-03-01T00:00:00.000Z",
       folder_id: 3,
       content: "Pigs pigs"
+    }
+  ];
+
+  const testFoldersArray = [
+    {
+      id: 1,
+      folder_name: "Dogs",
+    },
+    {
+      id: 2,
+      folder_name: "Cats",
+    },
+    {
+      id: 3,
+      folder_name: "Pigs",
+    },
+    {
+      id: 4,
+      folder_name: "Tigers",
     }
   ];
 
@@ -53,15 +73,22 @@ describe('Noteful Notes Endpoints', function() {
 
   context('Given there are notes in the database', () => {
     const testNotes = testNotesArray;
+    const testFolders = testFoldersArray;
     
     beforeEach('insert notes', () => {
-      return db
-        .into('notes')
-        .insert(testNotes);
+
+      return db 
+        .into('folders')
+        .insert(testFolders)
+        .then(() => {
+          return db
+          .into('notes')
+          .insert(testNotes);
+        });
     });
 
     
-    it('GET /api/notes:id responds with 200 and correct bookmark', () => {
+    it('GET /api/notes:id responds with 200 and correct note', () => {
 
       // eslint-disable-next-line no-undef
       return supertest(app)
@@ -71,7 +98,7 @@ describe('Noteful Notes Endpoints', function() {
     });
   
     
-    it('GET /api/notes responds with 200 and all of the bookmarks', () => {
+    it('GET /api/notes responds with 200 and all of the notes', () => {
       // eslint-disable-next-line no-undef
       return supertest(app)
         .get('/api/notes')
@@ -84,13 +111,43 @@ describe('Noteful Notes Endpoints', function() {
   describe('POST /api/notes', () => {
     it('creates a note, responding with 201 and the new note',  function() {
 
+      const newFolder = {
+        id: 3,
+        folder_name: 'Pigs',
+      };
+
       const newNote = {
-        id: 4,
+        //id: 4,
         note_name: "GoatNote",
         modified: "2018-03-01T00:00:00.000Z",
         folder_id: 3,
         content: "Goat goat"
       };
+
+      // return supertest(app)
+      //   .post('/api/folders')
+      //   .send(newFolder)
+      //   .then(() => {
+      //     return supertest(app)
+      //     .post('/api/notes')
+      //     .send(newNote)
+      //     .expect(201)
+      //     .expect(res => {
+      //       expect(res.body.note_name).to.eql(newNote.note_name);
+      //       expect(res.body.modified).to.eql(newNote.modified);
+      //       expect(res.body.folder_id).to.eql(newNote.folder_id);
+      //       expect(res.body.content).to.eql(newNote.content);
+      //       expect(res.body).to.have.property('id');
+      //       expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`);
+      //     })
+      //     .then(postRes =>
+      //       // eslint-disable-next-line no-undef
+      //       supertest(app)
+      //         .get('/api/notes/' + postRes.body.id )
+      //         .expect(postRes.body) 
+      //     );
+      //   });
+
       
       // eslint-disable-next-line no-undef
       return supertest(app)
@@ -139,7 +196,7 @@ describe('Noteful Notes Endpoints', function() {
           content: "Goat goat"
         })
         .expect(400, {
-          error: { message: 'Missing \'note_name\' in request body' }
+          error: { message: 'Missing \'folder_id\' in request body' }
         });
     });
 
