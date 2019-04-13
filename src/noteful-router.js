@@ -106,8 +106,8 @@ notefulRouter
   })
 
   .post(bodyParser, (req,res,next) => {
-    const {  note_name, modified, folder_id, content } = req.body;
-    const newNote = { note_name, modified, folder_id, content };
+    const { id, note_name, modified, folder_id, content } = req.body;
+    const newNote = { id, note_name, modified, folder_id, content };
 
     for (const [key, value] of Object.entries(newNote)) {
      

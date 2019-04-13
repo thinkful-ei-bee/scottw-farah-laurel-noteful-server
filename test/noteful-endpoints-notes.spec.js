@@ -11,7 +11,6 @@ describe('Noteful Notes Endpoints', function() {
       id: 1,
       note_name: "DogsNote",
       modified: '2019-01-03T00:00:00.000Z',
-      //modified: now(),
       folder_id: 1,
       content: "Dogs dogs"
     },
@@ -117,7 +116,7 @@ describe('Noteful Notes Endpoints', function() {
       };
 
       const newNote = {
-        //id: 4,
+        id: 4,
         note_name: "GoatNote",
         modified: "2018-03-01T00:00:00.000Z",
         folder_id: 3,
@@ -222,11 +221,24 @@ describe('Noteful Notes Endpoints', function() {
     context('Given there are notes in the database', () => {
       
       const testNotes = testNotesArray;
+      const testFolders = testFoldersArray;
   
+      // beforeEach('insert notes', () => {
+      //   return db
+      //     .into('notes')
+      //     .insert(testNotes);
+      // });
+
       beforeEach('insert notes', () => {
-        return db
-          .into('notes')
-          .insert(testNotes);
+
+        return db 
+          .into('folders')
+          .insert(testFolders)
+          .then(() => {
+            return db
+            .into('notes')
+            .insert(testNotes);
+          });
       });
   
       it('responds with 204 and removes the note', () => {
@@ -267,11 +279,24 @@ describe('Noteful Notes Endpoints', function() {
     });
     context('Given there are notes in the database', () => {
       const testNotes = testNotesArray;
+      const testFolders = testFoldersArray;
+
+      // beforeEach('insert notes', () => {
+      //   return db
+      //     .into('notes')
+      //     .insert(testNotes)
+      // });
 
       beforeEach('insert notes', () => {
-        return db
-          .into('notes')
-          .insert(testNotes)
+
+        return db 
+          .into('folders')
+          .insert(testFolders)
+          .then(() => {
+            return db
+            .into('notes')
+            .insert(testNotes);
+          });
       });
 
       it('responds with 204 and updates the note', () => {
