@@ -43,8 +43,8 @@ notefulRouter
     const newFolder = { id,folder_name };
 
     for (const [key, value] of Object.entries(newFolder)) {
-     
-      if (value === null || value === undefined) {
+     //trying something with id
+      if (key !== 'id' && (value === null || value === undefined)) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` }
         });
@@ -111,7 +111,7 @@ notefulRouter
 
     for (const [key, value] of Object.entries(newNote)) {
      
-      if (key !== 'content' && (value === null || value === undefined)) {
+      if ((key === 'note_name' || key === 'folder_id') && (value === null || value === undefined)) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` }
         });
@@ -163,7 +163,13 @@ notefulRouter
     const { id } = req.params;
     const knexInstance = req.app.get('db');
     notefulService.deleteNote(knexInstance,id)
-      .then(() => {
+      //was getting undexpected end of json error
+      //this did not fix anything lol
+      // .then((del) => {
+      //   res.status(204).json(del);
+      // }
+      // )
+      .then(numRowsAffected => {
         res.status(204).end();
       }
       )
