@@ -21,14 +21,14 @@ app.use(notefulRouter);
 
 
 //THIS WILL HAVE TO CHANGE
-app.get('/', (req, res,next) => {
-  const knexInstance = req.app.get('db');
-  notefulService.getAllBookmarks(knexInstance)
-    .then(bookmarks => {
-      res.json(bookmarks);
-    })
-    .catch(next);
-});
+// app.get('/', (req, res,next) => {
+//   const knexInstance = req.app.get('db');
+//   notefulService.getAllBookmarks(knexInstance)
+//     .then(bookmarks => {
+//       res.json(bookmarks);
+//     })
+//     .catch(next);
+// });
 
 app.use(function errorHandler(error, req, res, next) {
   let response
