@@ -33,10 +33,6 @@ describe('Noteful Folders Endpoints', function() {
 
   after('disconnect from db', () => db.destroy());
 
-  // before('clean the table', () => db('folders').truncate());
-
-  // afterEach('cleanup', () => db('folders').truncate());
-
   before('clean the table', () => db.raw('TRUNCATE folders, notes RESTART IDENTITY CASCADE'))
 
   afterEach('cleanup',() => db.raw('TRUNCATE folders, notes RESTART IDENTITY CASCADE'))

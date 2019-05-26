@@ -146,27 +146,6 @@ describe('Noteful Notes Endpoints', function() {
               .expect(postRes.body) 
           );
         });
-
-      
-      // eslint-disable-next-line no-undef
-      // return supertest(app)
-      //   .post('/api/notes')
-      //   .send(newNote)
-      //   .expect(201)
-      //   .expect(res => {
-      //     expect(res.body.note_name).to.eql(newNote.note_name);
-      //     expect(res.body.modified).to.eql(newNote.modified);
-      //     expect(res.body.folder_id).to.eql(newNote.folder_id);
-      //     expect(res.body.content).to.eql(newNote.content);
-      //     expect(res.body).to.have.property('id');
-      //     expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`);
-      //   })
-      //   .then(postRes =>
-      //     // eslint-disable-next-line no-undef
-      //     supertest(app)
-      //       .get('/api/notes/' + postRes.body.id )
-      //       .expect(postRes.body) 
-      //   );
     });
 
     it('responds with 400 and an error message when the \'note_name\' is missing', () => {
@@ -185,7 +164,6 @@ describe('Noteful Notes Endpoints', function() {
     });
 
     it('responds with 400 and an error message when the \'folder_id\' is missing', () => {
-      // eslint-disable-next-line no-undef
       return supertest(app)
         .post('/api/notes')
         .send({
@@ -198,23 +176,6 @@ describe('Noteful Notes Endpoints', function() {
           error: { message: 'Missing \'folder_id\' in request body' }
         });
     });
-
-    it('responds with 400 and an error message when the \'modified\' is missing', () => {
-      // eslint-disable-next-line no-undef
-      return supertest(app)
-        .post('/api/notes')
-        .send({
-          id: 4,
-          note_name: "GoatNote",
-          folder_id: 3,
-          content: "Goat goat"
-        })
-        .expect(400, {
-          error: { message: 'Missing \'modified\' in request body' }
-        });
-    });
-
-
   });
 
   describe('DELETE /api/notes/:id', () => {
@@ -222,12 +183,6 @@ describe('Noteful Notes Endpoints', function() {
       
       const testNotes = testNotesArray;
       const testFolders = testFoldersArray;
-  
-      // beforeEach('insert notes', () => {
-      //   return db
-      //     .into('notes')
-      //     .insert(testNotes);
-      // });
 
       beforeEach('insert notes', () => {
 
