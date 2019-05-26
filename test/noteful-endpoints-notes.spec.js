@@ -61,10 +61,6 @@ describe('Noteful Notes Endpoints', function() {
 
   after('disconnect from db', () => db.destroy());
 
-  // before('clean the table', () => db('bookmarks').truncate());
-
-  // afterEach('cleanup', () => db('bookmarks').truncate());
-
   before('clean the table', () => db.raw('TRUNCATE folders, notes RESTART IDENTITY CASCADE'))
 
   afterEach('cleanup',() => db.raw('TRUNCATE folders, notes RESTART IDENTITY CASCADE'))
@@ -89,20 +85,16 @@ describe('Noteful Notes Endpoints', function() {
     
     it('GET /api/notes:id responds with 200 and correct note', () => {
 
-      // eslint-disable-next-line no-undef
       return supertest(app)
         .get('/api/notes/1')
         .expect(200, testNotes[0]);
-      // TODO: add more assertions about the body
     });
   
     
     it('GET /api/notes responds with 200 and all of the notes', () => {
-      // eslint-disable-next-line no-undef
       return supertest(app)
         .get('/api/notes')
         .expect(200, testNotes);
-      // TODO: add more assertions about the body
     });
   });
 
@@ -140,7 +132,6 @@ describe('Noteful Notes Endpoints', function() {
             expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`);
           })
           .then(postRes =>
-            // eslint-disable-next-line no-undef
             supertest(app)
               .get('/api/notes/' + postRes.body.id )
               .expect(postRes.body) 
@@ -149,7 +140,6 @@ describe('Noteful Notes Endpoints', function() {
     });
 
     it('responds with 400 and an error message when the \'note_name\' is missing', () => {
-      // eslint-disable-next-line no-undef
       return supertest(app)
         .post('/api/notes')
         .send({
@@ -199,12 +189,10 @@ describe('Noteful Notes Endpoints', function() {
       it('responds with 204 and removes the note', () => {
         const idToRemove = 2;
         const expectedNotes = testNotes.filter(note => note.id !== idToRemove);
-        // eslint-disable-next-line no-undef
         return supertest(app)
           .delete(`/api/notes/${idToRemove}`)
           .expect(204)
           .then(res =>
-            // eslint-disable-next-line no-undef
             supertest(app)
               .get('/api/notes')
               .expect(expectedNotes)
@@ -214,7 +202,6 @@ describe('Noteful Notes Endpoints', function() {
       context('Given no notes', () => {
         it('responds with 404', () => {
           const noteId = 123456;
-          // eslint-disable-next-line no-undef
           return supertest(app)
             .delete(`/api/notes/${noteId}`)
             .expect(404, { error: { message: 'Note doesn\'t exist' } });
@@ -235,12 +222,6 @@ describe('Noteful Notes Endpoints', function() {
     context('Given there are notes in the database', () => {
       const testNotes = testNotesArray;
       const testFolders = testFoldersArray;
-
-      // beforeEach('insert notes', () => {
-      //   return db
-      //     .into('notes')
-      //     .insert(testNotes)
-      // });
 
       beforeEach('insert notes', () => {
 

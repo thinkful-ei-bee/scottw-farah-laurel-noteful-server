@@ -4,8 +4,6 @@ const express = require('express');
 
 const notefulRouter = express.Router();
 const bodyParser = express.json();
-const uuid = require('uuid/v4');
-const logger = require('./logger');
 const notefulService = require('./noteful-service');
 const xss = require('xss');
 
@@ -17,14 +15,10 @@ const serializeFolder = folder => ({
 const serializeNote = note => ({
   id: note.id,
   note_name: xss(note.note_name),
-  //MAY NEED TO CHANGE THIS
   modified: note.modified,
   content: xss(note.content),
-  //MAY NEED TO CHANGE THIS
   folder_id: note.folder_id,
 });
-
-
 
 notefulRouter
   .route('/api/folders')
@@ -43,13 +37,11 @@ notefulRouter
     const newFolder = { id,folder_name };
 
     for (const [key, value] of Object.entries(newFolder)) {
-     //trying something with id
       if (key !== 'id' && (value === null || value === undefined)) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` }
         });
       }
-
     }
 
     notefulService.insertFolder(
@@ -63,9 +55,7 @@ notefulRouter
           .json(folder);
       })
       .catch(next);
-    
   });
-
 
 notefulRouter
   .route('/api/folders/:id')
@@ -74,7 +64,6 @@ notefulRouter
       req.app.get('db'),
       req.params.id
     )
-   
       .then(folder => {
         if (!folder) {
           return res.status(404).json({
@@ -89,9 +78,6 @@ notefulRouter
   .get((req,res,next) => {
     return res.json(serializeFolder(res.folder));
   })
-
-
-
 
 notefulRouter
   .route('/api/notes')
@@ -116,7 +102,6 @@ notefulRouter
           error: { message: `Missing '${key}' in request body` }
         });
       }
-
     }
 
     notefulService.insertNote(
@@ -130,9 +115,7 @@ notefulRouter
           .json(note);
       })
       .catch(next);
-
   });
-
 
 notefulRouter
   .route('/api/notes/:id')
@@ -141,7 +124,6 @@ notefulRouter
       req.app.get('db'),
       req.params.id
     )
-   
       .then(note => {
         if (!note) {
           return res.status(404).json({
@@ -163,12 +145,6 @@ notefulRouter
     const { id } = req.params;
     const knexInstance = req.app.get('db');
     notefulService.deleteNote(knexInstance,id)
-      //was getting undexpected end of json error
-      //this did not fix anything lol
-      // .then((del) => {
-      //   res.status(204).json(del);
-      // }
-      // )
       .then(numRowsAffected => {
         res.status(204).end();
       }
@@ -200,5 +176,4 @@ notefulRouter
       .catch(next);
   });
   
-
 module.exports = notefulRouter;

@@ -60,6 +60,4 @@ const notefulService = {
  
 };
 
-
-
 module.exports = notefulService;
